@@ -55,14 +55,17 @@ int[,] SortArrayLines(int[,] matrix)
             {
                 if (matrix[i,j] < matrix[i,k])
                 {
-                    temp = matrix[i,j];
-                    matrix[i,j] = matrix[i,k];
-                    matrix[i,k] = temp;
+                    Swap(matrix, i, j, i, k);
                 }
             }
         }
     }
     return matrix;
+}
+
+void Swap(int[,] baseArray, int i1, int j1, int i2, int j2)
+{
+    (baseArray[i1,j1], baseArray[i2, j2])=(baseArray[i2,j2], baseArray[i1,j1]);
 }
 
 int[,] array = GenerateMatrix();
