@@ -53,7 +53,7 @@ int[,] SortArrayLines(int[,] matrix)
         {
             for (int k = j + 1; k < matrix.GetLength(1); k++)
             {
-                if (matrix[i,j] > matrix[i,k])
+                if (matrix[i,j] < matrix[i,k])
                 {
                     temp = matrix[i,j];
                     matrix[i,j] = matrix[i,k];
