@@ -19,86 +19,27 @@ void PrintMatrixAccurately(int[,] matrix) //не уверен, возможно 
     }
 }
 
-int[,] FillArraySpirally(int row, int col)
+void Step(int[,] massive, int direction, int ready_steps, int var, int x, int y)
 {
-    int[,] massive = new int[row, col];
-    int direction = 0;
-    int x = 0;
-    int y = 0;
-    int filled_columns = 0;
-    int filled_rows = 0;
-    int steps_iside_iteration = 0;
-    int var = 0;
-
-    while(var < massive.GetLength(0)*massive.GetLength(1))
-    { 
-        switch (direction)
-        {
-            case 0: // идём направо
-            {
-                while(steps_iside_iteration < massive.GetLength(1) - filled_columns)
-                {
-                    var++;
-                    massive[y, steps_iside_iteration + x] = var;
-                    steps_iside_iteration++;
-                }
-                x = x + steps_iside_iteration - 1;
-                steps_iside_iteration = 0;
-                filled_rows++; //для каждого последующего шага "вычеркиваем" заполненную строку
-                y++; //заранее делаем шаг вниз
-            } 
-            break;
-
-            case 1: // идём вниз
-            {
-                while(steps_iside_iteration < massive.GetLength(0) - filled_rows)
-                {
-                    var++;
-                    massive[steps_iside_iteration + y, x] = var;
-                    steps_iside_iteration++;
-                }
-                y = y + steps_iside_iteration - 1;
-                steps_iside_iteration = 0;
-                filled_columns++; //для каждого последующего шага "вычеркиваем" заполненный столбец
-                x--; //заранее делаем шаг влево
-            } 
-            break;
-
-            case 2: //идём влево
-            {
-                while(steps_iside_iteration < massive.GetLength(1) - filled_columns)
-                {
-                    var++;
-                    massive[y, x - steps_iside_iteration] = var;
-                    steps_iside_iteration++;
-                }
-                x = x - steps_iside_iteration + 1;
-                steps_iside_iteration = 0;
-                filled_rows++;
-                y--; //заранее делаем шаг вверх
-            }
-            break;
-
-            case 3: //идём вверх
-            {
-                while(steps_iside_iteration < massive.GetLength(0) - filled_rows)
-                {
-                    var++;
-                    massive[y - steps_iside_iteration, x] = var;
-                    steps_iside_iteration++;
-                }
-                y = y - steps_iside_iteration + 1;
-                steps_iside_iteration = 0;
-                filled_columns++;
-                x++; //заранее делаем шаг вправо
-            } 
-            break;
-        }
-        direction++;
-        if(direction == 4) direction = 0; // сбрасываем счётчик направления, для корректной работы цикла
+    int steps = 0;
+    int reverse = 1;
+    if(direction%4 > 1) reverse = -1;
+   
+    int even = ( direction + 1 ) % 2;
+    int odd = direction % 2;
+   
+    while(steps < massive.GetLength(even) - ready_steps)
+    {
+        var++;
+        massive[y + reverse * odd * steps, x + reverse * even * steps] = var;
+        steps++;        
     }
-    return massive;
+    x = x + ( ( steps - 1 ) * even - odd ) * reverse;
+    y = y + ( ( steps - 1 ) * odd + even ) * reverse;
+    ready_steps = ready_steps + even;
+    if (var < massive.GetLength(0)*massive.GetLength(1)) Step(massive, direction+1, ready_steps, var, x, y);
 }
 
-int[,] array = FillArraySpirally(4, 4);
+int[,] array = new int[9, 9];
+Step(array, 0, 0, 0, 0, 0);
 PrintMatrixAccurately(array);
