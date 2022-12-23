@@ -10,13 +10,11 @@ int Prompt(string message)
     return Convert.ToInt32(Console.ReadLine());
 }
 
-int summ = 0;
-
-void PlusNatural(int M, int N)
+int PlusNatural(int M, int N)
 {
-    summ = summ + M;
-    if(M < N) PlusNatural(M+1, N);
+    if(M < N) return M + PlusNatural(M + 1, N);
+    else return N;
 }
 
-PlusNatural(Prompt("Введите M"), Prompt("Введите N"));
+int summ = PlusNatural(Prompt("Введите M"), Prompt("Введите N"));
 Console.WriteLine(summ);
